@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>One Drop at a Time</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav id="navbar" class="navbar">
+    <img src="assets/charity-water-logo.svg" alt="charity: water logo" style="height:32px;width:auto;vertical-align:middle;">
+    <span style="font-weight:bold;font-size:1.2em;letter-spacing:1px;">charity: water</span>
+  </nav>
+  <header>
+    <h1>One Drop at a Time</h1>
+    <div id="scoreboard">
+      <span>Time: <span id="time">1500</span></span>
+      <span>Drinkable Water: <span id="lives">3</span></span>
+      <span>Collected: <span id="collected">0</span></span>
+      <span>Total Score: <span id="totalScore">0</span></span>
+    </div>
+  </header>
+  <main>
+    <div id="game-container">
+      <canvas id="gameCanvas" width="800" height="400"></canvas>
+      <div id="canvas-restart-overlay" style="position:absolute;top:0;left:0;width:800px;height:400px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:10;">
+        <button id="startGameBtn" style="font-size:2em;padding:24px 48px;">Start</button>
+      </div>
+      <div id="mobile-controls">
+        <button id="leftBtn">◀</button>
+        <button id="jumpBtn">⭥</button>
+        <button id="rightBtn">▶</button>
+      </div>
+    </div>
+    <section id="info">
+      <h2>charity: water</h2>
+      <p>
+        Information about charity: water, their mission to provide clean drinking water,
+        and why water scarcity is a global issue.
+      </p>
+    </section>
+    <section id="leaderboard-section">
+      <h2>Leaderboard</h2>
+      <div id="leaderboard-global"></div>
+    </section>
+  </main>
+  <div id="end-screen" class="hidden">
+    <h2>Level Score</h2>
+    <p>Time left: <span id="finalTime"></span></p>
+    <p>Collectables: <span id="finalCollectables"></span></p>
+    <p>Water Delivered: <span id="finalDelivered"></span></p>
+    <p>Total: <span id="finalScore"></span></p>
+    <p>Total Score: <span id="totalScoreEnd"></span></p>
+    <input id="playerNameInput" placeholder="Your name" class="hidden"style="margin:10px auto;max-width:200px;" />
+    <div id="end-screen-buttons">
+      <button id="nextLevelBtn" onclick="startNextLevel()">Next Level</button>
+      <button id="submitScoreBtn" class="hidden" onclick="submitScore()">Submit Score</button>
+      <button id="closeEndScreenBtn" class="hidden" onclick="closeEndScreen()">Close</button>
+    </div>
+    <div id="leaderboard" style="margin-top:16px;"></div>
+  </div>
+  <div id="game-over" class="hidden" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;">
+    <h2 style="color:#fff;">Game Over</h2>
+    <button id="restartBtn" style="font-size:1.2em;padding:10px 24px;margin-top:16px;">Restart Level</button>
+  </div>
+  <div id="restart-game-container" class="hidden" style="width:800px;margin:0 auto;text-align:center;">
+    <button id="restartGameBtn" style="font-size:1.2em;padding:16px 32px;margin:40px auto;">Restart Game</button>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
