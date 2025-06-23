@@ -527,20 +527,23 @@ window.addEventListener("keydown", (e) => {
   if (levelComplete || document.getElementById("end-screen").classList.contains("hidden") === false) return;
   if (e.code === "KeyA") keys.left = true;
   if (e.code === "KeyD") keys.right = true;
-  if (e.code === "Space" && player.onGround) {
-    // Check if in water for reduced jump
-    let inWater = false;
-    obstacles.forEach(obstacle => {
-      if (isColliding(player, obstacle) && obstacle.type === "water") {
-        inWater = true;
+  if (e.code === "Space") {
+    e.preventDefault(); // Always prevent scroll on Space
+    if (player.onGround) {
+      // Check if in water for reduced jump
+      let inWater = false;
+      obstacles.forEach(obstacle => {
+        if (isColliding(player, obstacle) && obstacle.type === "water") {
+          inWater = true;
+        }
+      });
+      if (inWater) {
+        player.dy = player.jumpForce / 2;
+      } else {
+        player.dy = player.jumpForce;
       }
-    });
-    if (inWater) {
-      player.dy = player.jumpForce / 2;
-    } else {
-      player.dy = player.jumpForce;
+      player.onGround = false;
     }
-    player.onGround = false;
   }
 });
 
@@ -611,9 +614,9 @@ function renderLeaderboard() {
     if (leaderboard.length === 0) {
       leaderboardDiv.innerHTML = "<h3>Leaderboard</h3><p>No scores yet.</p>";
     } else {
-      leaderboardDiv.innerHTML = `<h3>Leaderboard</h3><ol>` +
+      leaderboardDiv.innerHTML = `<h3>Leaderboard</h3><ul>` +
         leaderboard.map(entry => `<li>${entry.name}: ${entry.score}</li>`).join("") +
-        `</ol>`;
+        `</ul>`;
     }
   }
   // Global leaderboard
@@ -622,9 +625,9 @@ function renderLeaderboard() {
     if (leaderboard.length === 0) {
       globalDiv.innerHTML = "<p>No scores yet.</p>";
     } else {
-      globalDiv.innerHTML = `<ol>` +
+      globalDiv.innerHTML = `<ul>` +
         leaderboard.map(entry => `<li>${entry.name}: ${entry.score}</li>`).join("") +
-        `</ol>`;
+        `</ul>`;
     }
   }
 }
