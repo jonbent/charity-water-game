@@ -22,23 +22,40 @@
   </header>
   <main>
     <div id="game-container">
-      <canvas id="gameCanvas" width="800" height="400"></canvas>
-      <div id="canvas-restart-overlay" style="position:absolute;top:0;left:0;width:800px;height:400px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:10;">
-        <button id="startGameBtn" style="font-size:2em;padding:24px 48px;">Start</button>
+      <canvas id="gameCanvas" width="800" height="370"></canvas>
+      <div id="canvas-restart-overlay" style="position:absolute;top:0;left:0;width:800px;height:370px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:10;">
+        <div style="display:flex;gap:24px;">
+          <button id="startGameNormalBtn" style="font-size:2em;padding:24px 48px;">Normal</button>
+          <button id="startGameHardBtn" style="font-size:2em;padding:24px 48px;">Hard</button>
+        </div>
       </div>
-      <div id="mobile-controls">
+      <div id="mobile-controls" style="background: var(--cw-brown); border-radius: 0 0 12px 12px;">
         <button id="leftBtn">◀</button>
         <button id="jumpBtn">⭥</button>
         <button id="rightBtn">▶</button>
       </div>
     </div>
     <section id="info">
-      <h2>charity: water</h2>
+      <h2>charity: water - One Drop at a Time</h2>
       <p>
-        Information about charity: water, their mission to provide clean drinking water,
-        and why water scarcity is a global issue.
+        <strong>How to Play:</strong><br>
+        Use <b>A</b> (left), <b>D</b> (right), and <b>Space</b> (jump) on your keyboard.<br>
+        On mobile, use the on-screen arrow and jump buttons.<br>
+        Avoid water hazards, collect all the charity: water logos, and reach the finish line!
+      </p>
+      <p>
+        <strong>Scoring:</strong><br>
+        Your score is based on time left, collectables, and remaining lives.<br>
+      <ul>
+        <li>Each second left gives you 10 points.</li>
+        <li>Each remaining life gives you 1,000 points (in Hard mode, you always get the bonus for 3 lives if you finish).</li>
+        <li>Your total is multiplied by the number of charity: water jerry cans that you found (plus one).</li>
+        <li><b>Hard mode:</b> You start with 1 life and your score is doubled if you finish.</li>
+      </ul>
+      Try to finish fast, collect everything, and keep all your lives for the highest score!
       </p>
     </section>
+    <!-- Leaderboard section (restored) -->
     <section id="leaderboard-section">
       <h2>Leaderboard</h2>
       <div id="leaderboard-global"></div>
@@ -66,6 +83,41 @@
   <div id="restart-game-container" class="hidden" style="width:800px;margin:0 auto;text-align:center;">
     <button id="restartGameBtn" style="font-size:1.2em;padding:16px 32px;margin:40px auto;">Restart Game</button>
   </div>
+  <!-- Orientation overlay for mobile/portrait -->
+  <div id="orientation-overlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.9);z-index:10000;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-size:2em;text-align:center;">
+    <div>
+      <span style="font-size:3em;">🔄</span><br>
+      Please rotate your device<br>to play in landscape mode.
+    </div>
+  </div>
   <script src="script.js"></script>
+  <footer style="
+    width:100vw;
+    background:var(--cw-blue);
+    color:var(--cw-yellow);
+    text-align:center;
+    padding:28px 0 18px 0;
+    margin-top:32px;
+    box-shadow:0 -2px 12px var(--cw-gray);
+    font-family:'Segoe UI', Arial, sans-serif;
+    letter-spacing:0.5px;
+  ">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;max-width:800px;margin:0 auto;">
+      <div style="font-size:1.4em;font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:10px;">
+        <img src="assets/charity-water-logo.svg" alt="charity: water logo" style="height:32px;vertical-align:middle;margin-right:6px;">
+        <span style="color:var(--cw-yellow);">charity: water</span>
+      </div>
+      <div style="margin-top:2px;">
+        <a href="https://www.charitywater.org/main" target="_blank" rel="noopener"
+           style="color:var(--cw-yellow);text-decoration:none;font-weight:600;padding:8px 18px;border-radius:20px;transition:background 0.2s;display:inline-block;">
+          Official Website
+        </a>
+        <a href="https://www.charitywater.org/main#donate" target="_blank" rel="noopener"
+           style="color:var(--cw-blue);background:var(--cw-yellow);padding:8px 22px 8px 22px;border-radius:24px;text-decoration:none;font-weight:700;margin-left:18px;transition:background 0.2s,color 0.2s;display:inline-block;">
+          Donate
+        </a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

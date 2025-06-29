@@ -12,7 +12,7 @@
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: 'Proxima Nova', 'Avenir', 'Segoe UI', Arial, sans-serif;
   background: var(--cw-cream);
   color: var(--cw-black);
   display: flex;
@@ -91,8 +91,26 @@ header {
 #mobile-controls {
   display: none;
   justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
+  margin-top: 0;
+  background: var(--cw-brown);
+  border-radius: 0 0 12px 12px;
+  padding: 0;
+  gap: 0; /* Remove default gap, use margin on buttons instead */
+}
+#mobile-controls button {
+  margin: 4px 6px; /* Add margin between buttons */
+}
+
+/* Prevent jump button from changing color on hover, active, or focus */
+#jumpBtn,
+#jumpBtn:hover,
+#jumpBtn:active,
+#jumpBtn:focus {
+  background: var(--cw-yellow) !important;
+  color: var(--cw-blue) !important;
+  outline: none;
+  box-shadow: none;
+  border: none;
 }
 
 @media (max-width: 900px) {
@@ -215,7 +233,7 @@ h1, h2, h3 {
 
 #game-container {
   position: relative;
-  background: #87ceeb;
+  background: rgb(191, 108, 70);
   overflow: hidden;
   width: 100%;
   max-width: 800px;

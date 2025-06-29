@@ -50,7 +50,12 @@ const levels = [
     background: "assets/charity-water-background.png",
     playerStart: { x: 50, y: 300 },
     obstacles: [
-      { x: 335, y: 784, width: 336, height: 16, type: "water" }
+      { x: 335, y: 784, width: 336, height: 16, type: "water" },
+      { x: 866, y: 784, width: 672, height: 16, type: "water" },
+      { x: 1554, y: 784, width: 864, height: 16, type: "water" },
+      { x: 2831, y: 784, width: 177, height: 16, type: "water" },
+      { x: 3343, y: 784, width: 177, height: 16, type: "water" },
+      { x: 3862, y: 784, width: 177, height: 16, type: "water" },
     ],
     platforms: [
       { x: 554, y: 732, width: 32, height: 8 },
@@ -60,8 +65,66 @@ const levels = [
       { x: 238, y: 522, width: 32, height: 8 },
       { x: 342, y: 447, width: 32, height: 8 },
       { x: 485, y: 385, width: 32, height: 8 },
-      
-
+      { x: 797, y: 732, width: 32, height: 8 },
+      { x: 721, y: 647, width: 32, height: 8 },
+      { x: 800, y: 568, width: 32, height: 8 },
+      { x: 850, y: 496, width: 16, height: 8 },
+      { x: 700, y: 495, width: 32, height: 8 },
+      { x: 936, y: 517, width: 32, height: 8 },
+      { x: 793, y: 436, width: 32, height: 8 },
+      { x: 936, y: 517, width: 32, height: 8 },
+      { x: 1045, y: 586, width: 32, height: 8 },
+      { x: 1161, y: 660, width: 32, height: 8 },
+      { x: 882, y: 741, width: 32, height: 8 },
+      { x: 998, y: 739, width: 32, height: 8 },
+      { x: 1125, y: 738, width: 32, height: 8 },
+      { x: 1247, y: 736, width: 32, height: 8 },
+      { x: 1359, y: 697, width: 32, height: 8 },
+      { x: 1457, y: 740, width: 32, height: 8 },
+      { x: 1498, y: 664, width: 32, height: 8 },
+      {x: 1506, y: 772, width: 32, height: 8 },
+      { x: 1554, y: 772, width: 32, height: 8 },
+      { x: 1645, y: 771, width: 32, height: 8 },
+      { x: 1742, y: 771, width: 32, height: 8 },
+      { x: 1842, y: 770, width: 32, height: 8 },
+      { x: 1949, y: 770, width: 32, height: 8 },
+      { x: 2074, y: 769, width: 32, height: 8 },
+      { x: 2197, y: 767 , width: 32, height: 8 },
+      { x: 2329, y: 764, width: 32, height: 8 },
+      { x: 2421, y: 765, width: 32, height: 8 },
+      { x: 2530, y: 733, width: 32, height: 8 },
+      { x: 2629, y: 686, width: 32, height: 8 },
+      { x: 2564, y: 618, width: 32, height: 8 },
+      { x: 2657, y: 563, width: 32, height: 8 },
+      { x: 2726, y: 512, width: 32, height: 8 },
+      { x: 2861, y: 675, width: 32, height: 8 },
+      { x: 2966, y: 694, width: 32, height: 8 },
+      { x: 3356, y: 730, width: 32, height: 8 },
+      { x: 3469, y: 735, width: 32, height: 8 },
+      { x: 3868, y: 733, width: 32, height: 8 },
+      { x: 3987, y: 734, width: 32, height: 8 },
+      { x: 1538, y: 613, width: 864, height: 16},
+      { x: 2769, y: 496, width: 32, height: 16},
+      { x: 4096, y: 684, width: 32, height: 16},
+      { x: 4189, y: 629, width: 32, height: 16},
+      { x: 4258, y: 578, width: 32, height: 16},
+      { x: 4153, y: 508, width: 32, height: 16},
+      { x: 4060, y: 453, width: 32, height: 16},
+      { x: 3991, y: 402, width: 32, height: 16},
+    ],
+    walls: [
+      { x: 850, y: 496, width: 16, height: 288},
+      { x: 1538, y: 613, width: 16, height: 171},
+      {x: 2769, y: 496, width: 16, height: 288},
+      // Example: { x: 600, y: 700, width: 32, height: 80 }
+      // Add your wall objects here
+    ],
+    collectables: [
+      // Example collectable objects for this level:
+      { x: 485, y: 385, width: 32, height: 32 },
+      { x: 1554, y: 772, width: 32, height: 32 },
+      { x: 3991, y: 402, width: 32, height: 32 }
+      // Add as many as needed per level
     ]
   },
   // {
@@ -109,13 +172,33 @@ function updateCamera() {
   camera.y = Math.max(0, Math.min(camera.y, world.height - camera.height));
 }
 
+let sunImg = new Image();
+sunImg.src = "assets/sun.png";
+let cloudImg = new Image();
+cloudImg.src = "assets/cloud.png";
+
 function drawBackground() {
+  // Draw blue sky first
+  ctx.save();
+  ctx.fillStyle = "#7ec8e3"; // Light blue sky color
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.restore();
+
+  // Draw sun in top-left corner, peeking out and larger (partially off-canvas)
+  ctx.drawImage(sunImg, -40, -40, 180, 180);
+
+  // Draw clouds: top center and top right
+  ctx.drawImage(cloudImg, canvas.width / 2 , 40, 180, 180); // top center
+  ctx.drawImage(cloudImg, canvas.width - 140, 40, 180, 180);    // top right
+  ctx.drawImage(cloudImg, 40, 40, 180, 180);
+
+  // Draw background image over the sky, sun, and clouds
   ctx.drawImage(
     background,
-    camera.x, camera.y,                // Source x, y (from world)
-    camera.width, camera.height,       // Source width, height (viewport)
-    0, 0,                             // Destination x, y (canvas)
-    canvas.width, canvas.height        // Destination width, height (canvas)
+    camera.x, camera.y,
+    camera.width, camera.height,
+    0, 0,
+    canvas.width, canvas.height
   );
 }
 
@@ -251,7 +334,6 @@ function update(now) {
   }
 
   drawBackground();
-  drawFinishLine();
 
   // Gravity
   player.dy += player.gravity;
@@ -267,6 +349,31 @@ function update(now) {
         player.dy = 0;
         player.onGround = true;
         onPlatform = true;
+      }
+    }
+  });
+
+  // Wall collision (prevent horizontal movement through walls)
+  // Only block if colliding from the side, not from above
+  let blockedByWall = false;
+  walls.forEach(wall => {
+    // Check if player's next position would be inside a wall horizontally
+    // Only block if player's feet are above the top of the wall (not jumping down through)
+    if (
+      player.x + player.width > wall.x &&
+      player.x < wall.x + wall.width &&
+      player.y + player.height > wall.y &&
+      player.y < wall.y + wall.height
+    ) {
+      // If coming from left
+      if (player.x + player.width - 4 <= wall.x && keys.right) {
+        player.x = wall.x - player.width;
+        blockedByWall = true;
+      }
+      // If coming from right
+      if (player.x + 4 >= wall.x + wall.width && keys.left) {
+        player.x = wall.x + wall.width;
+        blockedByWall = true;
       }
     }
   });
@@ -324,7 +431,11 @@ function update(now) {
 
   // Obstacle collision (damage player, invincibility for 3 seconds)
   if (inWater && now > invincibleUntil) {
-    lives--;
+    if (difficulty === "hard") {
+      lives -= 2;
+    } else {
+      lives--;
+    }
     invincibleUntil = now + 3000; // 3 seconds in ms
   }
 
@@ -332,42 +443,58 @@ function update(now) {
   let moveX = 0;
   if (keys.left) moveX -= 4;
   if (keys.right) moveX += 4;
-  if (moveX !== 0) {
+  if (moveX !== 0 && !blockedByWall) {
     let newX = player.x + moveX;
     let newY = player.y;
-    if (inWater) {
-      // Only allow horizontal movement in water if jumping (moving up)
-      if (player.dy < 0) {
-        player.x = newX;
+    // Wall collision check for next position
+    let willCollideWall = false;
+    walls.forEach(wall => {
+      if (
+        newX + player.width > wall.x &&
+        newX < wall.x + wall.width &&
+        player.y + player.height > wall.y + 1 && // allow jumping over
+        player.y < wall.y + wall.height
+      ) {
+        willCollideWall = true;
       }
-    } else {
-      let blockedByPlatform = false;
-      if (player.onGround && !onPlatform) {
-        // Prevent walking onto raised platforms from the side
-        platforms.forEach(platform => {
-          if (
-            newX + player.width > platform.x &&
-            newX < platform.x + platform.width &&
-            platform.y + platform.height <= player.y + player.height - 1 &&
-            platform.y + platform.height > player.y + player.height - 10
-          ) {
-            blockedByPlatform = true;
-          }
-        });
-        if (!blockedByPlatform && canMoveTo(newX, newY)) {
+    });
+    if (!willCollideWall) {
+      if (inWater) {
+        // Only allow horizontal movement in water if jumping (moving up)
+        if (player.dy < 0) {
           player.x = newX;
         }
       } else {
-        // Allow air movement and platform movement freely
-        player.x = newX;
+        let blockedByPlatform = false;
+        if (player.onGround && !onPlatform) {
+          // Prevent walking onto raised platforms from the side
+          platforms.forEach(platform => {
+            if (
+              newX + player.width > platform.x &&
+              newX < platform.x + platform.width &&
+              platform.y + platform.height <= player.y + player.height - 1 &&
+              platform.y + platform.height > player.y + player.height - 10
+            ) {
+              blockedByPlatform = true;
+            }
+          });
+          if (!blockedByPlatform && canMoveTo(newX, newY)) {
+            player.x = newX;
+          }
+        } else {
+          // Allow air movement and platform movement freely
+          player.x = newX;
+        }
       }
     }
+    // else: blocked by wall, do not move
   }
   player.x = Math.max(0, Math.min(player.x, world.width - player.width));
 
   updateCamera();
   drawPlayer();
   drawCollectables(now);
+  drawFinishLinePeople(now);
   updateScoreboard();
 
   // Timer: decrement every frame (60fps)
@@ -390,17 +517,26 @@ function setupCollectablesForLevel() {
   collectables = [];
   collectedFlags = [];
   const level = levels[currentLevel];
-  // Place one collectable above the last platform
-  if (level.platforms.length > 0) {
-    const lastPlat = level.platforms[level.platforms.length - 1];
-    collectables.push({
-      x: lastPlat.x + lastPlat.width / 2 - 16, // center, assuming 32x32 image
-      y: lastPlat.y - 40, // above platform
-      width: 32,
-      height: 32,
-      bobOffset: Math.random() * Math.PI * 2 // randomize bob phase
+  if (level.collectables && Array.isArray(level.collectables)) {
+    collectables = level.collectables.map((c, i) => {
+      // Find the matching platform for this collectable's base coords
+      const platform = level.platforms.find(
+        p => p.x === c.x && p.y === c.y
+      );
+      let cx = c.x, cy = c.y;
+      if (platform) {
+        // Center horizontally above the platform, float above by 40px
+        cx = platform.x + platform.width / 2 - (c.width || 32) / 2;
+        cy = platform.y - 40;
+      }
+      return {
+        ...c,
+        x: cx,
+        y: cy,
+        bobOffset: Math.random() * Math.PI * 2 // randomize bob phase
+      };
     });
-    collectedFlags.push(false);
+    collectedFlags = collectables.map(() => false);
   }
 }
 
@@ -428,23 +564,22 @@ function checkCollectableCollision() {
   });
 }
 
-let finishLine = { x: 4649, y: world.height - GROUND_HEIGHT - 100, width: 32, height: 100 };
+let finishLine = { x: 4532, y: world.height - GROUND_HEIGHT - 100, width: 32, height: 100 };
 let levelComplete = false;
 
-function drawFinishLine() {
-  ctx.save();
-  ctx.fillStyle = "yellow";
-  ctx.fillRect(finishLine.x - camera.x, finishLine.y - camera.y, finishLine.width, finishLine.height);
-  ctx.restore();
-}
+// Add finish line people sprites
+let manImg = new Image();
+manImg.src = "assets/man.png";
+let womanImg = new Image();
+womanImg.src = "assets/woman.png";
 
 function showEndScreen(finalScore, breakdown) {
   totalScore += finalScore;
   const endScreen = document.getElementById("end-screen");
   // Only update the spans, do not overwrite innerHTML
   if (document.getElementById("finalTime")) document.getElementById("finalTime").textContent = breakdown.timeBonus;
-  if (document.getElementById("finalCollectables")) document.getElementById("finalCollectables").textContent = collected;
-  if (document.getElementById("finalDelivered")) document.getElementById("finalDelivered").textContent = breakdown.lives + 'x';
+  if (document.getElementById("finalCollectables")) document.getElementById("finalCollectables").textContent = breakdown.collected;
+  if (document.getElementById("finalDelivered")) document.getElementById("finalDelivered").textContent = breakdown.livesBonus;
   if (document.getElementById("finalScore")) document.getElementById("finalScore").textContent = finalScore;
   if (document.getElementById("totalScoreEnd")) document.getElementById("totalScoreEnd").textContent = totalScore;
 
@@ -459,7 +594,25 @@ function showEndScreen(finalScore, breakdown) {
 
 }
 
+function drawFinishLinePeople(tick) {
+  // Position people on either side of the finish line, with a little space
+  const finishX = finishLine.x;
+  const finishY = finishLine.y + finishLine.height - 96; // ground level for people (adjusted for 3/4 size)
+  const personWidth = 72;   // 3/4 of 96
+  const personHeight = 96;  // 3/4 of 128
+  const jumpAmplitude = 27; // 3/4 of 36
+  const jumpSpeed = 0.0125;
 
+  // Left person (man)
+  const manX = finishX - personWidth - 24;
+  const manY = finishY - Math.abs(Math.sin(tick * jumpSpeed)) * jumpAmplitude;
+  // Right person (woman)
+  const womanX = finishX + finishLine.width + 24;
+  const womanY = finishY - Math.abs(Math.sin(tick * jumpSpeed + Math.PI)) * jumpAmplitude;
+
+  ctx.drawImage(manImg, manX - camera.x, manY - camera.y, personWidth, personHeight);
+  ctx.drawImage(womanImg, womanX - camera.x, womanY - camera.y, personWidth, personHeight);
+}
 
 function checkFinishLineCollision() {
   if (
@@ -474,10 +627,25 @@ function checkFinishLineCollision() {
       // Calculate score
       let secondsLeft = Math.ceil(time / 60);
       let timeBonus = secondsLeft * 10;
-      let livesMult = Math.max(1, lives); // 1x, 2x, or 3x
-      let collectableBonus = collected * 1000;
-      let finalScore = (timeBonus + collectableBonus) * livesMult;
-      showEndScreen(finalScore, { timeBonus, lives: livesMult, collectableBonus });
+      let collectableMult = collected + 1;
+      // Each remaining life adds 1000 points
+      let livesBonus;
+      if (difficulty === "hard") {
+        livesBonus = 3 * 1000;
+      } else {
+        livesBonus = lives * 1000;
+      }
+      let baseScore = timeBonus;
+      let finalScore = (baseScore + livesBonus) * collectableMult;
+      if (difficulty === "hard") {
+        finalScore *= 2;
+      }
+      showEndScreen(finalScore, { 
+        timeBonus, 
+        collectableMult, 
+        livesBonus, 
+        collected 
+      });
     }
   }
 }
@@ -490,18 +658,28 @@ function loadLevel(levelIdx) {
   player.dy = 0;
   obstacles = JSON.parse(JSON.stringify(level.obstacles));
   platforms = JSON.parse(JSON.stringify(level.platforms));
+  walls = JSON.parse(JSON.stringify(level.walls || [])); // Load walls for this level
   setupCollectablesForLevel();
   levelComplete = false;
   // Update finish line y in case world.height changes per level
   finishLine.y = world.height - GROUND_HEIGHT - 100;
 }
 
+let difficulty = "normal"; // "normal" or "hard"
+
 function startGame() {
   // Do NOT reset currentLevel here, so restart only restarts the current level
   score = 0;
   if (currentLevel === 0) totalScore = 0;
-  lives = 3;
-  time = 18000; // 5 minutes at 60fps
+  player.gravity = 0.5;
+  // Set difficulty-dependent values
+  if (difficulty === "hard") {
+    lives = 1;
+  } else {
+    lives = 3;
+    
+  }
+
   collected = 0;
   lastDisplayedSecond = Math.ceil(time / 60);
   lastFrameTime = 0;
@@ -538,7 +716,7 @@ window.addEventListener("keydown", (e) => {
         }
       });
       if (inWater) {
-        player.dy = player.jumpForce / 2;
+        player.dy = player.jumpForce / 1.5;
       } else {
         player.dy = player.jumpForce;
       }
@@ -553,17 +731,66 @@ window.addEventListener("keyup", (e) => {
   if (e.code === "KeyD") keys.right = false;
 });
 
-document.getElementById("leftBtn").addEventListener("touchstart", () => keys.left = true);
-document.getElementById("rightBtn").addEventListener("touchstart", () => keys.right = true);
-document.getElementById("jumpBtn").addEventListener("touchstart", () => {
-  if (player.onGround) {
-    player.dy = player.jumpForce;
-    player.onGround = false;
+// --- Orientation and Mobile Controls Logic ---
+
+function isPortrait() {
+  return window.innerHeight > window.innerWidth;
+}
+
+function updateOrientation() {
+  const overlay = document.getElementById('orientation-overlay');
+  const gameCanvas = document.getElementById('gameCanvas');
+  const mobileControls = document.getElementById('mobile-controls');
+  if (overlay && gameCanvas && mobileControls) {
+    if (isPortrait()) {
+      overlay.style.display = 'flex';
+      gameCanvas.style.display = 'none';
+      mobileControls.style.display = 'none';
+    } else {
+      overlay.style.display = 'none';
+      gameCanvas.style.display = '';
+      mobileControls.style.display = 'flex';
+    }
+  }
+}
+
+window.addEventListener('resize', updateOrientation);
+window.addEventListener('orientationchange', updateOrientation);
+document.addEventListener('DOMContentLoaded', updateOrientation);
+
+// Mobile controls: simulate key events and direct state for touch
+function triggerKey(code) {
+  const event = new KeyboardEvent('keydown', { code, key: code, bubbles: true });
+  document.dispatchEvent(event);
+}
+
+// Defensive: only add listeners if buttons exist
+document.addEventListener('DOMContentLoaded', function() {
+  // Mobile controls event listeners
+  const leftBtn = document.getElementById('leftBtn');
+  const rightBtn = document.getElementById('rightBtn');
+  const jumpBtn = document.getElementById('jumpBtn');
+  if (leftBtn && rightBtn && jumpBtn) {
+    leftBtn.addEventListener('touchstart', e => { e.preventDefault(); keys.left = true; });
+    rightBtn.addEventListener('touchstart', e => { e.preventDefault(); keys.right = true; });
+    jumpBtn.addEventListener('touchstart', e => {
+      e.preventDefault();
+      if (player.onGround) {
+        player.dy = player.jumpForce;
+        player.onGround = false;
+      }
+    });
+    leftBtn.addEventListener('touchend', e => { e.preventDefault(); keys.left = false; });
+    rightBtn.addEventListener('touchend', e => { e.preventDefault(); keys.right = false; });
+
+    // Optional: also support mouse for desktop testing
+    leftBtn.addEventListener('mousedown', e => { e.preventDefault(); triggerKey('KeyA'); });
+    rightBtn.addEventListener('mousedown', e => { e.preventDefault(); triggerKey('KeyD'); });
+    jumpBtn.addEventListener('mousedown', e => { e.preventDefault(); triggerKey('Space'); });
   }
 });
 
-document.getElementById("leftBtn").addEventListener("touchend", () => keys.left = false);
-document.getElementById("rightBtn").addEventListener("touchend", () => keys.right = false);
+// --- End of Orientation and Mobile Controls Logic ---
 
 document.getElementById("restartBtn").addEventListener("click", () => {
   document.getElementById("game-over").classList.add("hidden");
@@ -572,12 +799,23 @@ document.getElementById("restartBtn").addEventListener("click", () => {
 
 document.addEventListener("DOMContentLoaded", function() {
   renderLeaderboard();
-  document.getElementById("startGameBtn").addEventListener("click", () => {
-    document.getElementById("startGameBtn").innerHTML = "Restart Game";
-    document.getElementById("canvas-restart-overlay").classList.add("hidden");
-    currentLevel = 0; // Reset to first level
-    startGame();
-  });
+  // Difficulty selection buttons
+  const normalBtn = document.getElementById("startGameNormalBtn");
+  const hardBtn = document.getElementById("startGameHardBtn");
+  if (normalBtn && hardBtn) {
+    normalBtn.addEventListener("click", () => {
+      difficulty = "normal";
+      document.getElementById("canvas-restart-overlay").classList.add("hidden");
+      currentLevel = 0;
+      startGame();
+    });
+    hardBtn.addEventListener("click", () => {
+      difficulty = "hard";
+      document.getElementById("canvas-restart-overlay").classList.add("hidden");
+      currentLevel = 0;
+      startGame();
+    });
+  }
 });
 
 function submitScore() {
@@ -585,10 +823,11 @@ function submitScore() {
   submitBtn.disabled = true;
   const name = document.getElementById("playerNameInput").value.trim() || "Anonymous";
   const score = totalScore;
+  // Store difficulty with score
   let leaderboard = JSON.parse(localStorage.getItem("cwLeaderboard") || "[]");
-  // Prevent duplicate name/score entries
-  if (!leaderboard.some(entry => entry.name === name && entry.score === score)) {
-    leaderboard.push({ name, score });
+  // Prevent duplicate name/score/difficulty entries
+  if (!leaderboard.some(entry => entry.name === name && entry.score === score && entry.difficulty === difficulty)) {
+    leaderboard.push({ name, score, difficulty });
   }
   leaderboard.sort((a, b) => b.score - a.score);
   leaderboard = leaderboard.slice(0, 10); // Top 10
@@ -615,7 +854,9 @@ function renderLeaderboard() {
       leaderboardDiv.innerHTML = "<h3>Leaderboard</h3><p>No scores yet.</p>";
     } else {
       leaderboardDiv.innerHTML = `<h3>Leaderboard</h3><ul>` +
-        leaderboard.map(entry => `<li>${entry.name}: ${entry.score}</li>`).join("") +
+        leaderboard.map(entry =>
+          `<li>${entry.name}: ${entry.score} <span style="font-size:0.9em;opacity:0.7;">(${entry.difficulty === "hard" ? "Hard" : "Normal"})</span></li>`
+        ).join("") +
         `</ul>`;
     }
   }
@@ -626,7 +867,9 @@ function renderLeaderboard() {
       globalDiv.innerHTML = "<p>No scores yet.</p>";
     } else {
       globalDiv.innerHTML = `<ul>` +
-        leaderboard.map(entry => `<li>${entry.name}: ${entry.score}</li>`).join("") +
+        leaderboard.map(entry =>
+          `<li>${entry.name}: ${entry.score} <span style="font-size:0.9em;opacity:0.7;">(${entry.difficulty === "hard" ? "Hard" : "Normal"})</span></li>`
+        ).join("") +
         `</ul>`;
     }
   }
